@@ -12,9 +12,10 @@
     <header class="dashboard-header">
         <div class="header-container">
             <div class="header-content">
-                <div class="branding">
-                    <h1><a href="{{ url_for('home') }}">ProConnect</a></h1>
-                    <h2>Skill is Currency</h2>
+              <div class="branding">
+		<a href="{{ url_for('home') }}">
+		  <img src="https://i.imgur.com/OWLPMLU.png" alt="ProConnect Logo" class="logo"/>
+		</a>    
                 </div>
                 <nav class="main-nav">
                     <ul>
@@ -25,8 +26,8 @@
                     </ul>
                 </nav>
                 <div class="auth-links">
-                    <a href="signin.html">Sign In</a>
-                    <a href="login.html">Log In</a>
+                    <a href="{{ url_for('register') }}">Register</a>
+                    <a href="{{ url_for('login') }}">Log In</a>
                 </div>
             </div>
         </div>
@@ -48,11 +49,11 @@
         <section id="skill-search" class="tab-content">
             <div class="container">
                 <h2>Skill Search</h2>
-                <select id="skills-dropdown">
-                    <option value="web-development">Web Development</option>
-                    <option value="graphic-design">Graphic Design</option>
-                    <option value="data-analysis">Data Analysis</option>
-                    <!-- Add more options as needed -->
+                <label for="skills-category-dropdown">Category:</label>
+                <select id="skills-category-dropdown">
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
                 </select>
                 <button id="search-btn" class="btn">Search</button>
                 <div id="profiles-container"></div>
@@ -72,6 +73,10 @@
             <div class="container">
                 <h2>Update Your Profile</h2>
                 <form id="update-form" method="POST" action="{{ url_for('update_profile') }}">
+		  {{ form.hidden_tag() }}  <!-- This line will include the CSRF token -->
+
+		    <input type="hidden" id="profile_id" name="id" value="{{ profile_id }}">
+			  
                     <label for="name">Name:</label>
                     <input type="text" id="name" name="name" required>
 
@@ -98,14 +103,25 @@
                         <option value="both">Both</option>
                     </select>
 
-                    <label for="skills">Skills:</label>
-                    <div id="skills-container">
-                        <div class="skill-entry">
-                            <input type="text" name="skills[]" placeholder="Skill" required>
-                            <input type="text" name="duration[]" placeholder="Duration (e.g., 5 years)" required>
-                        </div>
-                    </div>
-                    <button type="button" id="add-skill">Add Skill</button>
+                    <label for="category">Category:</label>
+                    <select id="category" name="category" required>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+
+		    <label for="skills">Skills:</label>
+		    <div id="skills-container">
+		      {{ form.hidden_tag() }}
+		      {{ form.skills.label }}
+		      {% for skill in form.skills %}
+		          <div class="skill-entry">
+			    <input type="text" name="skills-{{ loop.index0 }}-skill_name" placeholder="Skill" required>
+			    <input type="text" name="skills-{{ loop.index0 }}-duration" placeholder="Duration (e.g., 5 years)" required>
+			  </div>
+		       {% endfor %}
+		    </div>
+		    <button type="button" id="add-skill">Add Skill</button>
 
                     <!-- Email -->
                     <label for="email">Email:</label>

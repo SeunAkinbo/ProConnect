@@ -18,39 +18,44 @@ $(document).ready(function() {
         $('#' + tabId).show();
     });
 
-    // Skill Search button click event
+    // Update Skill Search button click event
     $('#search-btn').on('click', function() {
-        var selectedSkill = $('#skills-dropdown').val();
-        getProfiles(selectedSkill);
+	var selectedCategory = $('#skills-category-dropdown').val();
+	getProfiles(selectedCategory);
     });
 
     // Update Profile form submission
     $('#update-form').on('submit', function(event) {
-        event.preventDefault();
-        var formData = $(this).serialize();
-        $.ajax({
-            type: 'POST',
-            url: '/update',
-            data: formData,
-            success: function() {
-                alert('Profile updated successfully!');
-                location.reload(); // Reload the page to reflect the changes
+	event.preventDefault();
+	var formData = new FormData(this);
+	$.ajax({
+	    type: 'POST',
+	    url: '/update_profile',
+	    data: formData,
+	    processData: false,
+	    contentType: false,
+	    success: function() {
+		alert('Profile updated successfully!');
+		location.reload(); // Reload the page to reflect the changes
             },
-            error: function() {
-                alert('There was an error updating the profile.');
+            error: function(jqXHR) {
+		var response = jqXHR.responseJSON;
+		var message = response ? response.message : 'There was an error updating the profile.';
+		alert(message);
             }
-        });
+	});
     });
 
     // Add Skill button click event
-    $('#add-skill').on('click', function() {
-        $('#skills-container').append(`
+    $('#add-skill').click(function() {
+	var skillEntryHtml = `
             <div class="skill-entry">
-                <input type="text" name="skills[]" placeholder="Skill" required>
-                <input type="text" name="duration[]" placeholder="Duration (e.g., 5 years)" required>
+                <input type="text" name="skills-${$('.skill-entry').length}-skill_name" placeholder="Skill" required>
+                <input type="text" name="skills-${$('.skill-entry').length}-duration" placeholder="Duration (e.g., 5 years)" required>
                 <button type="button" class="remove-skill">Remove</button>
-            </div>
-        `);
+             </div>
+        `;
+	$('#skills-container').append(skillEntryHtml);
     });
 
     // Remove Skill button click event
@@ -58,19 +63,19 @@ $(document).ready(function() {
         $(this).closest('.skill-entry').remove();
     });
 
-    // Function to get profiles based on selected skill
-    function getProfiles(skill) {
-        $.ajax({
-            type: 'GET',
-            url: '/profiles',
-            data: { skill: skill },
-            success: function(profiles) {
-                displayProfiles(profiles);
+    // Function to get profiles based on selected category and skill
+    function getProfiles(category) {
+	$.ajax({
+	    type: 'GET',
+	    url: '/profiles',
+	    data: { category: category },
+	    success: function(profiles) {
+		displayProfiles(profiles);
             },
-            error: function() {
-                alert('There was an error retrieving the profiles.');
+	    error: function() {
+		alert('There was an error retrieving the profiles.');
             }
-        });
+	});
     }
 
     // Function to display profiles in the container
