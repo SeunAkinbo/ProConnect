@@ -203,4 +203,49 @@ $(document).ready(function() {
         $('.tab-content').hide();
         $('#' + tab_id).show();
     });
+
+    // Function to handle the popup logic
+    function handleAuthPopup() {
+        var popup = $('#auth-popup');
+        var closeBtn = $('.close-btn');
+        var getStartedBtn = $('#get-started-btn');
+        var loginBtn = $('#login-btn');
+        var signupBtn = $('#signup-btn');
+        var continueBtn = $('#continue-btn');
+
+        // Show the popup when 'Get Started' button is clicked
+        getStartedBtn.on('click', function() {
+            popup.show();
+        });
+
+        // Close the popup when the 'x' button is clicked
+        closeBtn.on('click', function() {
+            popup.hide();
+        });
+
+        // Close the popup when clicking outside of the popup content
+        $(window).on('click', function(event) {
+            if (event.target == popup[0]) {
+                popup.hide();
+            }
+        });
+
+        // Redirect to login page
+        loginBtn.on('click', function() {
+            window.location.href = '/login';
+        });
+
+        // Redirect to signup page
+        signupBtn.on('click', function() {
+            window.location.href = '/register';
+        });
+
+        // Redirect to dashboard
+        continueBtn.on('click', function() {
+            window.location.href = '/dashboard';
+        });
+    }
+
+    // Call the function to handle the popup
+    handleAuthPopup();
 });

@@ -5,9 +5,14 @@ from models import db, Profile, Skill, Category, User
 from forms import UpdateProfileForm, RegistrationForm, LoginForm
 from flask_wtf import CSRFProtect
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
+# Store upload files
+app.config['UPLOAD_FOLDER'] = os.path.realpath('.') + '/uploads'
 
 # Initialize CSRF protection
 csrf = CSRFProtect(app)
@@ -49,6 +54,10 @@ def get_category_choices():
     categories = Category.query.all()
     return [(category.id, category.name) for category in categories]
 
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -62,14 +71,15 @@ def login():
             return redirect(url_for('dashboard'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', tittle='Login', form=form)
+    return render_template('login.html', form=form)
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('home'))
-
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('login'))
+        
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -82,6 +92,7 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
+
 @app.route('/update_profile', methods=['GET', 'POST'])
 @login_required
 def update_profile():
@@ -90,6 +101,15 @@ def update_profile():
 
     if request.method == 'POST':
         if form.validate_on_submit():
+            # Check if a file was uploaded
+            if 'file' in request.files:
+                file = request.files['file']
+                if file and allowed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                    file.save(file_path)
+                    form.avatar.data = file_path
+
             # Check if a profile already exists for the current user
             profile = Profile.query.filter_by(user_id=current_user.id).first()
 
