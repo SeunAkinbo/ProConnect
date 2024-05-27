@@ -15,7 +15,7 @@ csrf.init_app(app)
 
 # Initialize the database
 db.init_app(app)
-
+    
 # Initialize Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -62,7 +62,7 @@ def login():
             return redirect(url_for('dashboard'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', tittle='Login' form=form)
+    return render_template('login.html', tittle='Login', form=form)
 
 @app.route('/logout')
 @login_required
@@ -74,18 +74,18 @@ def logout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.session.add(new_user)
+        user = User(email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', form=form)
 
 @app.route('/update_profile', methods=['GET', 'POST'])
 @login_required
 def update_profile():
-    form = UpdateProfileForm(id=profile.id)
+    form = UpdateProfileForm(request.form)
     form.category.choices = get_category_choices()
 
     if request.method == 'POST':
@@ -156,4 +156,6 @@ def get_profiles():
     return jsonify(profiles_data)
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(debug=True, host='0.0.0.0', port='5007')

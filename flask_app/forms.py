@@ -2,6 +2,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField, FieldList, FormField, SubmitField, FileField, IntegerField, EmailField, URLField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, URL, Length, Optional, EqualTo
+from models import User
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -10,12 +11,16 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Log In')
     
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign Up')
-    
+    submit = SubmitField('Register')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('Email is already in use.')
+        
 class SkillForm(FlaskForm):
     skill_name = StringField('Skill Name', validators=[DataRequired()])
     duration = StringField('Duration (e.g., 5 years)', validators=[DataRequired()])

@@ -187,28 +187,17 @@ body {
     align-items: center;
 }
 
+.dashboard-heading h1 {
+    font-size: 1.5rem;
+    color: #333;
+}
 .branding h1 {
     margin-bottom: 0px;
-}
-
-.branding h2 {
-    margin-bottom: 1px;
-    font-size: 1.2rem;
-    color: grey;
 }
 
 .dashboard-heading h1 {
     font-size: 1.5rem;
     color: #333;
-}
-
-.branding h1 a {
-    text-decoration: none;
-    color: purple;
-}
-
-.branding h1 a:hover {
-    color: green;
 }
 
 .main-nav ul {
@@ -728,6 +717,7 @@ body.auth-page {
     max-width: 400px;
     width: 100%;
     box-sizing: border-box;
+    border: 1px solid #cccccc;
 }
 
 /* Form group styling */

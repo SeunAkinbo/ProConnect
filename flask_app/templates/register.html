@@ -3,32 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Register - ProConnect</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
-    <div class="container">
+<body class="auth-page">
+    <div class="auth-container">
         <h2>Register</h2>
         <form method="POST" action="{{ url_for('register') }}">
             {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{ form.username.label }}
-                {{ form.username(class_="form-control") }}
-            </div>
-            <div class="form-group">
+            <div class="auth-form-group">
                 {{ form.email.label }}
-                {{ form.email(class_="form-control") }}
+                {{ form.email(size=32, class_='form-control') }}
             </div>
-            <div class="form-group">
+            <div class="auth-form-group">
                 {{ form.password.label }}
-                {{ form.password(class_="form-control") }}
+                {{ form.password(size=32, class_='form-control') }}
             </div>
-            <div class="form-group">
+            <div class="auth-form-group">
                 {{ form.confirm_password.label }}
-                {{ form.confirm_password(class_="form-control") }}
+                {{ form.confirm_password(size=32, class_='form-control') }}
             </div>
-            <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+            <button type="submit" class="auth-btn auth-btn-primary">Register</button>
         </form>
+        <p>Already have an account? <a href="{{ url_for('login') }}" class="auth-link">Login here</a>.</p>
     </div>
 </body>
 </html>
