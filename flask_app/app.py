@@ -90,8 +90,11 @@ def update_profile():
 
     if request.method == 'POST':
         if form.validate_on_submit():
+            # Check if a profile already exists for the current user
             profile = Profile.query.filter_by(user_id=current_user.id).first()
+
             if profile:
+                # Update the existing profile
                 profile.name = form.name.data
                 profile.email = form.email.data
                 profile.description = form.description.data
@@ -105,34 +108,53 @@ def update_profile():
                 profile.category_id = form.category.data
 
                 profile.skills.clear()
-
                 for skill in form.skills.entries:
                     new_skill = Skill(skill_name=skill.data['skill_name'], duration=skill.data['duration'], profile=profile)
                     db.session.add(new_skill)
 
                 db.session.commit()
-                return jsonify(success=True)
+                return jsonify(success=True, message="Profile updated successfully!")
             else:
-                return jsonify(success=False, message="Profile not found"), 404
+                # Create a new profile
+                new_profile = Profile(
+                    user_id=current_user.id,
+                    name=form.name.data,
+                    email=form.email.data,
+                    description=form.description.data,
+                    avatar=form.avatar.data,
+                    address=form.address.data,
+                    payment=form.payment.data,
+                    availability=form.availability.data,
+                    linkedin=form.linkedin.data,
+                    github=form.github.data,
+                    reviews=form.reviews.data,
+                    category_id=form.category.data
+                )
+                db.session.add(new_profile)
+
+                for skill in form.skills.entries:
+                    new_skill = Skill(skill_name=skill.data['skill_name'], duration=skill.data['duration'], profile=new_profile)
+                    db.session.add(new_skill)
+
+                db.session.commit()
+                return jsonify(success=True, message="Profile created successfully!")
         else:
             return jsonify(success=False, message="Form validation failed", errors=form.errors), 400
 
     return render_template('dashboard.html', form=form)  # Render the form for GET requests
-
-
 
 @app.route('/profiles', methods=['GET'])
 def get_profiles():
     category_id = request.args.get('category')
     skill_name = request.args.get('skill')
 
-    query = Profile.query.join(Skill).filter(Skill.skill_name.ilike(f'%{skill_name}%'))
+    query = Profile.query
 
     if category_id:
         query = query.filter(Profile.category_id == category_id)
-    
+
     if skill_name:
-        query = query.filter(Skill.skill_name.ilike(f'%{skill_name}%'))
+        query = query.join(Skill).filter(Skill.skill_name.ilike(f'%{skill_name}%'))
 
     profiles = query.all()
 
