@@ -43,13 +43,13 @@
                     <li><a href="#update-record" class="tab-link" data-tab="update-record">Update Record</a></li>
                 </ul>
             </nav>
-        </aside>
+      </aside>
 
+      <main class="dashboard-content">
         <!-- Skill Search Section -->
         <section id="skill-search" class="tab-content">
             <div class="container">
                 <h2>Skill Search</h2>
-                <label for="skills-category-dropdown">Category:</label>
                 <select id="skills-category-dropdown">
                     {% for category in categories %}
                         <option value="{{ category.id }}">{{ category.name }}</option>
@@ -142,6 +142,7 @@
                 </form>
             </div>
         </section>
+      </main>
     </div>
 
     <!-- Modal for Contact Details -->

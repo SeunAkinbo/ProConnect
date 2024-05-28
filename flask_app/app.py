@@ -92,7 +92,6 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
-
 @app.route('/update_profile', methods=['GET', 'POST'])
 @login_required
 def update_profile():

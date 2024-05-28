@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField, FieldList, FormField, SubmitField, FileField, IntegerField, EmailField, URLField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Email, URL, Length, Optional, EqualTo
+from wtforms.validators import DataRequired, Email, URL, Length, Optional, EqualTo, ValidationError
 from models import User
 
 class LoginForm(FlaskForm):
@@ -20,7 +20,7 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('Email is already in use.')
-        
+     
 class SkillForm(FlaskForm):
     skill_name = StringField('Skill Name', validators=[DataRequired()])
     duration = StringField('Duration (e.g., 5 years)', validators=[DataRequired()])

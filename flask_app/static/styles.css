@@ -18,25 +18,6 @@ body {
 }
 
 /* Hero Section */
-.hero {
-    background: url('https://i.imgur.com/qOyAeur.png') no-repeat center center;
-    background-size: cover; /* Default background size */
-    color: grey;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 100%; /* Ensure the element takes the full width of the viewport */
-    overflow: hidden; /* Prevents any overflow issues */
-}
-
-@media (max-width: 768px) {
-    .hero {
-        background-size: contain; /* Adjust background size for smaller screens */
-    }
-}
-
 
 .hero h1 {
     font-size: 3rem;
@@ -103,6 +84,7 @@ body {
     width: 80%;
     max-width: 400px;
     text-align: center;
+    border-radius: 15px;
 }
 
 .close-btn {
@@ -127,21 +109,20 @@ body {
     margin: 10px 0;
     background-color: #007BFF;
     color: white;
-    border: none;
+    border: 1px solid black;
     cursor: pointer;
     font-size: 16px;
     text-align: center;
+    border-radius: 15px;
 }
 
 .auth-popup .btn:hover {
     background-color: #0056b3;
 }
 
-
 /* About Section */
 .about {
     padding: 2rem 0;
-    pa
 }
 
 .about h2 {
@@ -415,7 +396,7 @@ body {
     transform: translateY(1px);
 }
 
-#skills-dropdown {
+#skills-category-dropdown {
     flex: 1;
     padding: 8px;
     font-size: 1rem;
