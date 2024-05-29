@@ -6,6 +6,14 @@
     <title>ProConnect Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        // Pass logged_in status to JavaScript
+        var logged_in = {{ 'true' if current_user.is_authenticated else 'false' }};
+    </script>
+    <script>
+        var fieldsData = {{ fields_data|tojson }};
+        console.log('Fields Data:', fieldsData);  // Debugging line to check the data
+    </script>
 </head>
 <body class="dashboard-page">
     <!-- Dashboard Navigation -->
@@ -26,8 +34,11 @@
                     </ul>
                 </nav>
                 <div class="auth-links">
-                  <a href="{{ url_for('logout') }}">Logout</a>
-		      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="User Avatar" class="user-avatar">
+		  {% if logged_in %}
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="User Avatar" class="user-avatar">
+		  {% else %}
+		      <a href="{{ url_for('login') }}">Log In</a>
+		  {% endif %}
                 </div>
             </div>
         </div>
@@ -47,18 +58,22 @@
 
       <main class="dashboard-content">
         <!-- Skill Search Section -->
-        <section id="skill-search" class="tab-content">
-            <div class="container">
+	<section id="skill-search" class="tab-content">
+	    <div class="container">
                 <h2>Skill Search</h2>
-                <select id="skills-category-dropdown">
-                    {% for category in categories %}
-                        <option value="{{ category.id }}">{{ category.name }}</option>
+		<select id="fields-dropdown">
+		    <option value="">Select Field</option>
+                    {% for field in fields_data %}
+                        <option value="{{ field.id }}">{{ field.name }}</option>
                     {% endfor %}
-                </select>
-                <button id="search-btn" class="btn">Search</button>
-                <div id="profiles-container"></div>
-            </div>
-        </section>
+		</select>
+		<select id="category-dropdown">
+		    <option value="">Select Category</option>
+		</select>
+		<button id="search-btn" class="btn">Search</button>
+		<div id="profiles-container"></div>
+	    </div>
+	</section>
 
         <!-- Team View Section -->
         <section id="team-view" class="tab-content" style="display: none;">
@@ -103,14 +118,25 @@
                         <option value="both">Both</option>
                     </select>
 
-                    <label for="category">Category:</label>
-                    <select id="category" name="category" required>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                        {% endfor %}
-                    </select>
+		    <div>
+		      <label for="field">Field:</label>
+		      <select id="field" name="field" required>
+			  {% for field in fields_data %}
+			      <option value="{{ field.id }}">{{ field.name }}</option>
+			  {% endfor %}
+			      <option value="other">Other</option>
+		      </select>
+		      <input type="text" id="field-other" name="field_other" placeholder="Enter your field" style="display: none;">
+		    </div>
+		    <div>
+		      <label for="category">Category:</label>
+		      <select id="category" name="category" required>
+			<!-- Options will be populated by script.js -->
+		      </select>
+		      <input type="text" id="category-other" name="category_other" placeholder="Enter your category" style="display: none;">
+		    </div>
 
-		    <label for="skills">Skills:</label>
+		    <label for="skills"></label>
 		    <div id="skills-container">
 		      {{ form.hidden_tag() }}
 		      {{ form.skills.label }}

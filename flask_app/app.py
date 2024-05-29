@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request, jsonify, flash
 from werkzeug.security import generate_password_hash
 from config import Config
-from models import db, Profile, Skill, Category, User
+from models import db, Profile, Skill, Category, User, Field
 from forms import UpdateProfileForm, RegistrationForm, LoginForm
 from flask_wtf import CSRFProtect
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -14,6 +14,10 @@ app.config.from_object(Config)
 # Store upload files
 app.config['UPLOAD_FOLDER'] = os.path.realpath('.') + '/uploads'
 
+# Ensure UPLOAD_FOLDER exists
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+    
 # Initialize CSRF protection
 csrf = CSRFProtect(app)
 csrf.init_app(app)
@@ -35,24 +39,34 @@ def load_user(user_id):
 def home():
     return render_template('ProConnect.html')
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     form = UpdateProfileForm()
-    categories = Category.query.all()
-    return render_template('dashboard.html', categories=categories, form=form)
+    fields = Field.query.all()
+    fields_data = [
+        {
+            'id': field.id,
+            'name': field.name,
+            'categories': [{'id': category.id, 'name': category.name} for category in field.categories]
+        }
+        for field in fields
+    ]
+    return render_template('dashboard.html', logged_in=current_user.is_authenticated, form=form, fields_data=fields_data)
 
-@app.route('/add_categories')
-def add_categories():
-    categories = ['Web Development', 'Graphic Design', 'Data Analysis', 'Project Management']
-    for name in categories:
-        category = Category(name=name)
-        db.session.add(category)
-    db.session.commit()
-    return "Categories added!"
+@app.route('/get_categories_by_field', methods=['GET'])
+def get_categories_by_field():
+    field_id = request.args.get('field_id')
+    categories = Category.query.filter_by(field_id=field_id).all()
+    categories_data = [{'id': category.id, 'name': category.name} for category in categories]
+    return jsonify(categories_data)
+
+def get_field_choices():
+    fields = Field.query.all()
+    return [(field.id, field.name) for field in fields] + [('other', 'Other')]
 
 def get_category_choices():
     categories = Category.query.all()
-    return [(category.id, category.name) for category in categories]
+    return [(category.id, category.name) for category in categories] + [('other', 'Other')]
 
 def allowed_file(filename):
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -78,7 +92,7 @@ def login():
 def logout():
     logout_user()
     flash('You have been logged out.', 'success')
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
         
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -96,78 +110,112 @@ def register():
 @login_required
 def update_profile():
     form = UpdateProfileForm(request.form)
+    form.field.choices = get_field_choices()
     form.category.choices = get_category_choices()
 
     if request.method == 'POST':
         if form.validate_on_submit():
-            # Check if a file was uploaded
-            if 'file' in request.files:
-                file = request.files['file']
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                    file.save(file_path)
-                    form.avatar.data = file_path
+            try:
+                # Check if a file was uploaded
+                if 'file' in request.files:
+                    file = request.files['file']
+                    if file and allowed_file(file.filename):
+                        filename = secure_filename(file.filename)
+                        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                        print(f"Saving file to {file_path}")  # Debugging line
+                        file.save(file_path)
+                        form.avatar.data = file_path
+                    else:
+                        print("File is not allowed or not uploaded correctly.")  # Debugging line
 
-            # Check if a profile already exists for the current user
-            profile = Profile.query.filter_by(user_id=current_user.id).first()
+                field_id = form.field.data
+                category_id = form.category.data
 
-            if profile:
-                # Update the existing profile
-                profile.name = form.name.data
-                profile.email = form.email.data
-                profile.description = form.description.data
-                profile.avatar = form.avatar.data
-                profile.address = form.address.data
-                profile.payment = form.payment.data
-                profile.availability = form.availability.data
-                profile.linkedin = form.linkedin.data
-                profile.github = form.github.data
-                profile.reviews = form.reviews.data
-                profile.category_id = form.category.data
+                # Check if the user selected 'Other' and provided custom input
+                if field_id == 'other':
+                    custom_field_name = request.form.get('field_other')
+                    custom_field = Field(name=custom_field_name)
+                    db.session.add(custom_field)
+                    db.session.commit()
+                    field_id = custom_field.id
 
-                profile.skills.clear()
-                for skill in form.skills.entries:
-                    new_skill = Skill(skill_name=skill.data['skill_name'], duration=skill.data['duration'], profile=profile)
-                    db.session.add(new_skill)
+                if category_id == 'other':
+                    custom_category_name = request.form.get('category_other')
+                    custom_category = Category(name=custom_category_name, field_id=field_id)
+                    db.session.add(custom_category)
+                    db.session.commit()
+                    category_id = custom_category.id
 
-                db.session.commit()
-                return jsonify(success=True, message="Profile updated successfully!")
-            else:
-                # Create a new profile
-                new_profile = Profile(
-                    user_id=current_user.id,
-                    name=form.name.data,
-                    email=form.email.data,
-                    description=form.description.data,
-                    avatar=form.avatar.data,
-                    address=form.address.data,
-                    payment=form.payment.data,
-                    availability=form.availability.data,
-                    linkedin=form.linkedin.data,
-                    github=form.github.data,
-                    reviews=form.reviews.data,
-                    category_id=form.category.data
-                )
-                db.session.add(new_profile)
+                # Check if a profile already exists for the current user
+                profile = Profile.query.filter_by(user_id=current_user.id).first()
 
-                for skill in form.skills.entries:
-                    new_skill = Skill(skill_name=skill.data['skill_name'], duration=skill.data['duration'], profile=new_profile)
-                    db.session.add(new_skill)
+                if profile:
+                    # Update the existing profile
+                    profile.name = form.name.data
+                    profile.email = form.email.data
+                    profile.description = form.description.data
+                    profile.avatar = form.avatar.data
+                    profile.address = form.address.data
+                    profile.payment = form.payment.data
+                    profile.availability = form.availability.data
+                    profile.linkedin = form.linkedin.data
+                    profile.github = form.github.data
+                    profile.reviews = form.reviews.data
+                    profile.category_id = category_id
+                    profile.field_id = field_id
 
-                db.session.commit()
-                return jsonify(success=True, message="Profile created successfully!")
+                    profile.skills.clear()
+                    for skill in form.skills.entries:
+                        new_skill = Skill(skill_name=skill.data['skill_name'], duration=skill.data['duration'], profile=profile)
+                        db.session.add(new_skill)
+
+                    db.session.commit()
+                    return jsonify(success=True, message="Profile updated successfully!")
+                else:
+                    # Create a new profile
+                    new_profile = Profile(
+                        user_id=current_user.id,
+                        name=form.name.data,
+                        email=form.email.data,
+                        description=form.description.data,
+                        avatar=form.avatar.data,
+                        address=form.address.data,
+                        payment=form.payment.data,
+                        availability=form.availability.data,
+                        linkedin=form.linkedin.data,
+                        github=form.github.data,
+                        reviews=form.reviews.data,
+                        category_id=category_id,
+                        field_id=field_id
+                    )
+                    db.session.add(new_profile)
+
+                    for skill in form.skills.entries:
+                        new_skill = Skill(skill_name=skill.data['skill_name'], duration=skill.data['duration'], profile=new_profile)
+                        db.session.add(new_skill)
+
+                    db.session.commit()
+                    return jsonify(success=True, message="Profile created successfully!")
+            except Exception as e:
+                print(f"An error occurred: {e}")  # Debugging line
+                return jsonify(success=False, message="An error occurred", error=str(e)), 500
         else:
+            print(form.errors)  # Debugging line
             return jsonify(success=False, message="Form validation failed", errors=form.errors), 400
 
-    return render_template('dashboard.html', form=form)  # Render the form for GET requests
+    return render_template('dashboard.html', form=form)
+
 
 @app.route('/profiles', methods=['GET'])
 def get_profiles():
+    field_id = request.args.get('field_id')
     category_id = request.args.get('category')
     skill_name = request.args.get('skill')
 
     query = Profile.query
+
+    if field_id:
+        query = query.filter(Field.id == field_id)
 
     if category_id:
         query = query.filter(Profile.category_id == category_id)

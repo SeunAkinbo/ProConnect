@@ -7,7 +7,7 @@ HOST="18.234.105.208"
 DB_NAME="pro_dev_db"
 
 # SQL file
-SQL_FILE="decoy_profiles.sql"
+SQL_FILE="add_category.sql"
 
 # Import the dump file
 mysql -u $USER -p$PASSWORD -h $HOST $DB_NAME < $SQL_FILE

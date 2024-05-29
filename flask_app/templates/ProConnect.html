@@ -10,7 +10,14 @@
 <body>
     <!-- Hero Section -->
     <header class="hero">
-        <div class="container">
+      <div class="container">
+	{% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="auth-alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
             <h1>ProConnect</h1>
             <p>Unlock your potential. Connect, exchange skills, and collaborate.</p>
             <button id="get-started-btn" class="btn-container"><strong>Get Started</strong></button>
@@ -23,9 +30,9 @@
             <span class="close-btn">&times;</span>
             <h2>Welcome to ProConnect</h2>
 	    <p>Login or Signup to create profile, connect, exchange skills, and collaborate.</p>
-            <button id="login-btn" class="btn">Login</button>
-            <button id="signup-btn" class="btn">Sign Up</button>
-            <button id="continue-btn" class="btn">Stay Logged Out</button>
+            <button id="login-btn" class="btn1">Login</button>
+            <button id="signup-btn" class="btn2">Sign Up</button>
+            <button id="continue-btn" class="btn3">Stay Logged Out</button>
         </div>
     </div>
 

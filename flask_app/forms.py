@@ -2,7 +2,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField, FieldList, FormField, SubmitField, FileField, IntegerField, EmailField, URLField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Email, URL, Length, Optional, EqualTo, ValidationError
-from models import User
+from models import User, Field, Category
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -30,18 +30,14 @@ class UpdateProfileForm(FlaskForm):
     description = TextAreaField('Description', validators=[DataRequired()])
     avatar = FileField('Avatar', validators=[Optional()])
     address = StringField('Address', validators=[DataRequired()])
-    
     payment = SelectField('Payment Option', choices=[('currency', 'Currency'), ('skill', 'Skill'), ('both', 'Both')], validators=[DataRequired()])
     availability = SelectField('Availability', choices=[('physical', 'Physical'), ('remote', 'Remote'), ('both', 'Both')], validators=[DataRequired()])
-
-    category = SelectField('Category', choices=[], validators=[DataRequired()])  # Choices will be filled in the view
-    
-    skills = FieldList(FormField(SkillForm), min_entries=1, validators=[DataRequired()])
-    
+    field = SelectField('Field', choices=[], validators=[DataRequired()])
+    category = SelectField('Category', choices=[], validators=[DataRequired()])
+    skills = FieldList(FormField(SkillForm), min_entries=1, max_entries=1, validators=[DataRequired()])
     email = EmailField('Email', validators=[DataRequired(), Email()])
     linkedin = URLField('LinkedIn', validators=[DataRequired(), URL()])
     github = URLField('GitHub', validators=[DataRequired(), URL()])
-    
     reviews = TextAreaField('Reviews/Endorsements', validators=[DataRequired()])
     
     submit = SubmitField('Update')

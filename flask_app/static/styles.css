@@ -79,7 +79,7 @@ body {
 .auth-popup-content {
     background-color: #fefefe;
     margin: 15% auto;
-    padding: 20px;
+    padding: 30px;
     border: 1px solid #888;
     width: 80%;
     max-width: 400px;
@@ -102,22 +102,63 @@ body {
 }
 
 /* Add styles for the buttons inside the popup */
-.auth-popup .btn {
+.auth-popup .btn1 {
     display: block;
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    background-color: #007BFF;
-    color: white;
-    border: 1px solid black;
+    padding: 20px;
+    margin: 20px 0;
+    background-color: #B9F9D3;
+    color: #0F6533;
+    border: 1px solid #0F6533;
     cursor: pointer;
     font-size: 16px;
     text-align: center;
     border-radius: 15px;
 }
 
-.auth-popup .btn:hover {
-    background-color: #0056b3;
+.auth-popup .btn1:hover {
+    background-color: #8CFCBB;
+}
+
+.auth-popup .btn2 {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    margin: 20px 0;
+    background-color: #22B861;
+    color: white;
+    border: 1px solid #0F6533;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 15px;
+}
+
+.auth-popup .btn2:hover {
+    background-color: #0F6533;
+}
+
+.auth-popup .btn3 {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    margin: 20px 0;
+    background-color: white;
+    color: #0F6533;
+    border: 1px solid #0F6533;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 15px;
+    
+}
+
+.auth-popup .btn3:hover {
+    background-color: #B9F9D3;
+}
+
+.auth-popup p {
+    front-size: 14px;
 }
 
 /* About Section */
@@ -557,36 +598,6 @@ body {
     margin: 0.5rem 0;
 }
 
-.profile-details .collaborate-btn {
-    background: #f44336;
-    color: white;
-    padding: 0.5rem 2rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    float: left;
-}
-
-.profile-details .collaborate-btn:hover {
-    background: #d32f2f;
-}
-
-.profile-details .connect-btn {
-    background: #f44336;
-    color: white;
-    padding: 0.5rem 2rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    float: right;
-}
-
-.profile-details .connect-btn:hover {
-    background: #d32f2f;
-}
-
 /* Modal styles */
 body {
     font-family: Arial, sans-serif;
@@ -671,7 +682,18 @@ body {
     margin-top: 0;
 }
 
-.modal-profile .connect-btn {
+.btn-default {
+    display: block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background-color: silver;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-success {
     display: block;
     margin: 10px 0;
     padding: 10px 20px;
@@ -682,24 +704,14 @@ body {
     cursor: pointer;
 }
 
-.modal-profile .connect-btn:hover {
+.btn-default:hover {
+    background-color: #B0ADAD;
+}
+
+.btn-success:hover {
     background-color: #218838;
 }
 
-.modal-profile .collaborate-btn {
-    display: block;
-    margin: 10px 0;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.modal-profile .collaborate-btn:hover {
-    background-color: #218838;
-}
 
 #contact-info p {
     margin: 5px 0;
@@ -860,5 +872,7 @@ body.auth-page {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    object-fit: cover;
     cursor: pointer;
+    margin-left: 15px;
 }

@@ -5,6 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 db = SQLAlchemy()
 
+
 class User(UserMixin, db.Model):
     __tablename__='user'
     id = db.Column(db.Integer, primary_key=True)
@@ -17,11 +18,18 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+class Field(db.Model):
+    __tablename__ = 'field'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    categories = db.relationship('Category', backref='field', lazy=True)
     
 class Category(db.Model):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
+    field_id = db.Column(db.Integer, db.ForeignKey('field.id'), nullable=False)
     profiles = db.relationship('Profile', backref='category', lazy=True)
 
 class Profile(db.Model):

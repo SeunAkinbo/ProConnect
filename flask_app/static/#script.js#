@@ -40,7 +40,6 @@ $(document).ready(function() {
         });
     }).trigger('change');
 
-
     // Update Profile form submission
     $('#update-form').on('submit', function(event) {
 	event.preventDefault();
