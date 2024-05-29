@@ -437,16 +437,25 @@ body {
     transform: translateY(1px);
 }
 
-#skills-category-dropdown {
+#category-dropdown {
     flex: 1;
     padding: 8px;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 5px;
     color: grey;
-    width: 80%;
+    width: 40%;
 }
 
+#fields-dropdown {
+    flex: 1;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: grey;
+    width: 40%;
+}
 /* Team View */
 .team-member {
     display: flex;

@@ -87,11 +87,15 @@ $(document).ready(function() {
 	    url: '/profiles',
 	    data: { category: category },
 	    success: function(profiles) {
-		displayProfiles(profiles);
-            },
+		if (profiles.length === 0) {
+                    $('#profiles-container').html('<p>No profiles found. Keep searching, your perfect match might be just around the corner!</p>');
+		} else {
+                    displayProfiles(profiles);
+		}
+	    },
 	    error: function() {
 		alert('There was an error retrieving the profiles.');
-            }
+	    }
 	});
     }
 
