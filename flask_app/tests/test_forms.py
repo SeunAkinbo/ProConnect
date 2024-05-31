@@ -42,33 +42,42 @@ class TestLoginForm(TestCase):
         self.assertFalse(form.validate())
 
 class TestRegistrationForm(TestCase):
-    
+    """Tests for registration form"""
     def test_valid_registration_form(self):
+        """Tests for a valid registration"""
         form = RegistrationForm(data={'username': 'testuser', 'email': 'test@example.com', 'password': 'password', 'confirm_password': 'password'})
         self.assertTrue(form.validate())
 
     def test_invalid_email_registration_form(self):
+        """Tests for a invalid email registration"""
         form = RegistrationForm(data={'username': 'testuser', 'email': 'invalid_email', 'password': 'password', 'confirm_password': 'password'})
         self.assertFalse(form.validate())
 
     def test_mismatched_passwords_registration_form(self):
+        """Tests for a mismatched password registration"""
         form = RegistrationForm(data={'username': 'testuser', 'email': 'test@example.com', 'password': 'password', 'confirm_password': 'different_password'})
         self.assertFalse(form.validate())
 
 class TestSkillForm(TestCase):
+    """Unittest for the SkillForm"""
     def test_valid_skill_form(self):
+        """Tests for valid skill form"""
         form = SkillForm(data={'skill': 'Python'})
         self.assertTrue(form.validate())
 
     def test_missing_skill_form(self):
+        """Tests for missing skill form"""
         form = SkillForm(data={'skill': ''})
         self.assertFalse(form.validate())
 
 class TestUpdateProfileForm(TestCase):
+    """Tests for update profile form"""
     def test_valid_update_profile_form(self):
+        """Tests for a valid updated profile form"""
         form = UpdateProfileForm(data={'username': 'newusername', 'email': 'new@example.com'})
         self.assertTrue(form.validate())
 
     def test_invalid_email_update_profile_form(self):
+        """Tests for invalid email update profile form"""
         form = UpdateProfileForm(data={'username': 'newusername', 'email': 'invalid_email'})
         self.assertFalse(form.validate())
