@@ -42,37 +42,60 @@ $(document).ready(function() {
 
 
     // Update Profile form submission
-    $('#update-form').on('submit', function(event) {
-	event.preventDefault();
-	var formData = new FormData(this);
-	$.ajax({
-	    type: 'POST',
-	    url: '/update_profile',
-	    data: formData,
-	    processData: false,
-	    contentType: false,
-	    success: function() {
-		alert('Profile updated successfully!');
-		location.reload(); // Reload the page to reflect the changes
-            },
-            error: function(jqXHR) {
-		var response = jqXHR.responseJSON;
-		var message = response ? response.message : 'There was an error updating the profile.';
-		alert(message);
-            }
-	});
-    });
+    $('#update-profile-form').submit(function(event) {
+        event.preventDefault();
+        var isValid = true;
+        var errorMessage = '';
 
-    // Add Skill button click event
+        // Validate each input field
+        $('#update-profile-form input, #update-profile-form textarea').each(function() {
+            if ($(this).prop('required') && $(this).val() === '') {
+                isValid = false;
+                errorMessage += $(this).attr('placeholder') + ' is required.<br>';
+                $(this).addClass('input-error');
+            } else {
+                $(this).removeClass('input-error');
+            }
+        });
+
+        if (!isValid) {
+            $('#form-errors').html(errorMessage).show();
+        } else {
+            $('#form-errors').hide();
+            var formData = new FormData(this);
+
+            // Handle the form submission via AJAX
+            $.ajax({
+                type: 'POST',
+                url: '/update_profile',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.success) {
+                        alert('Profile updated successfully!');
+			location.reload();
+                    } else {
+                        $('#form-errors').html(response.message).show();
+                    }
+                },
+                error: function(response) {
+                    $('#form-errors').html('An error occurred. Please try again.').show();
+                }
+            });
+        }
+    });
+    
     $('#add-skill').click(function() {
-	var skillEntryHtml = `
+        var skillIndex = $('#skills-container .skill-entry').length;
+
+        var newSkillEntry = `
             <div class="skill-entry">
-                <input type="text" name="skills-${$('.skill-entry').length}-skill_name" placeholder="Skill" required>
-                <input type="text" name="skills-${$('.skill-entry').length}-duration" placeholder="Duration (e.g., 5 years)" required>
-                <button type="button" class="remove-skill">Remove</button>
-             </div>
+                <input type="text" name="skills-${skillIndex}-skill_name" placeholder="Skill" required>
+                <input type="text" name="skills-${skillIndex}-duration" placeholder="Duration (e.g., 5 years)" required>
+            </div>
         `;
-	$('#skills-container').append(skillEntryHtml);
+        $('#skills-container').append(newSkillEntry);
     });
 
     // Remove Skill button click event

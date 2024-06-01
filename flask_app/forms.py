@@ -25,6 +25,23 @@ class SkillForm(FlaskForm):
     skill_name = StringField('Skill Name', validators=[DataRequired()])
     duration = StringField('Duration (e.g., 5 years)', validators=[DataRequired()])
 
+class NoneIfEmpty(Optional):
+    def __call__(self, form, field):
+        if field.data == '':
+            field.data = None
+        Optional.__call__(self, form, field)
+
+class Unique(object):
+    def __init__(self, model, field, message="This element already exists."):
+        self.model = model
+        self.field = field
+        self.message = message
+
+    def __call__(self, form, field):
+        check = self.model.query.filter(self.field == field.data).first()
+        if check:
+            raise ValidationError(self.message)
+        
 class UpdateProfileForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
@@ -37,7 +54,7 @@ class UpdateProfileForm(FlaskForm):
     skills = FieldList(FormField(SkillForm), min_entries=1, max_entries=1, validators=[DataRequired()])
     email = EmailField('Email', validators=[DataRequired(), Email()])
     linkedin = URLField('LinkedIn', validators=[DataRequired(), URL()])
-    github = URLField('GitHub', validators=[DataRequired(), URL()])
-    reviews = TextAreaField('Reviews/Endorsements', validators=[DataRequired()])
+    github = URLField('GitHub', validators=[NoneIfEmpty()])
+    reviews = TextAreaField('Reviews/Endorsements', validators=[NoneIfEmpty()])
     
-    submit = SubmitField('Update')
+    submit = SubmitField('Update_profile')

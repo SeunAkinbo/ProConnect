@@ -6,17 +6,14 @@ from forms import UpdateProfileForm, RegistrationForm, LoginForm
 from flask_wtf import CSRFProtect
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
+from flask import send_from_directory
 import os
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# Store upload files
-app.config['UPLOAD_FOLDER'] = os.path.realpath('.') + '/uploads'
-
-# Ensure UPLOAD_FOLDER exists
-if not os.path.exists(app.config['UPLOAD_FOLDER']):
-    os.makedirs(app.config['UPLOAD_FOLDER'])
+app.config['UPLOADED_AVATARS_DEST'] = os.path.join(os.path.realpath('.'), 'uploads')
     
 # Initialize CSRF protection
 csrf = CSRFProtect(app)
@@ -52,6 +49,10 @@ def dashboard():
         for field in fields
     ]
     return render_template('dashboard.html', logged_in=current_user.is_authenticated, form=form, fields_data=fields_data)
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOADED_AVATARS_DEST'], filename)
 
 @app.route('/get_categories_by_field', methods=['GET'])
 def get_categories_by_field():
@@ -116,28 +117,16 @@ def update_profile():
     if request.method == 'POST':
         if form.validate_on_submit():
             try:
-                # Check if a file was uploaded
-                if 'file' in request.files:
-                    file = request.files['file']
-                    if file and allowed_file(file.filename):
-                        filename = secure_filename(file.filename)
-                        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                        print(f"Saving file to {file_path}")  # Debugging line
-                        file.save(file_path)
-                        form.avatar.data = file_path
-                    else:
-                        print("File is not allowed or not uploaded correctly.")  # Debugging line
 
-                field_id = form.field.data
+                avatar_url = None
+                
+                if 'avatar' in request.files:
+                    file = request.files['avatar']
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOADED_AVATARS_DEST'], filename))
+                    avatar_url = url_for('uploaded_file', filename=filename)
+                    
                 category_id = form.category.data
-
-                # Check if the user selected 'Other' and provided custom input
-                if field_id == 'other':
-                    custom_field_name = request.form.get('field_other')
-                    custom_field = Field(name=custom_field_name)
-                    db.session.add(custom_field)
-                    db.session.commit()
-                    field_id = custom_field.id
 
                 if category_id == 'other':
                     custom_category_name = request.form.get('category_other')
@@ -154,7 +143,7 @@ def update_profile():
                     profile.name = form.name.data
                     profile.email = form.email.data
                     profile.description = form.description.data
-                    profile.avatar = form.avatar.data
+                    profile.avatar = avatar_url
                     profile.address = form.address.data
                     profile.payment = form.payment.data
                     profile.availability = form.availability.data
@@ -162,12 +151,18 @@ def update_profile():
                     profile.github = form.github.data
                     profile.reviews = form.reviews.data
                     profile.category_id = category_id
-                    profile.field_id = field_id
+                    
 
                     profile.skills.clear()
-                    for skill in form.skills.entries:
-                        new_skill = Skill(skill_name=skill.data['skill_name'], duration=skill.data['duration'], profile=profile)
-                        db.session.add(new_skill)
+                    for key, value in request.form.items():
+                        if key.startswith('skills-'):
+                            _, index, field = key.split('-')
+                            if field == 'skill_name':
+                                new_skill = Skill(skill_name=value, profile=profile)
+                                db.session.add(new_skill)
+                            elif field == 'duration':
+                                new_skill.duration = value
+                    
 
                     db.session.commit()
                     return jsonify(success=True, message="Profile updated successfully!")
@@ -178,7 +173,7 @@ def update_profile():
                         name=form.name.data,
                         email=form.email.data,
                         description=form.description.data,
-                        avatar=form.avatar.data,
+                        avatar=avatar_url,
                         address=form.address.data,
                         payment=form.payment.data,
                         availability=form.availability.data,
@@ -186,13 +181,18 @@ def update_profile():
                         github=form.github.data,
                         reviews=form.reviews.data,
                         category_id=category_id,
-                        field_id=field_id
+                        
                     )
                     db.session.add(new_profile)
 
-                    for skill in form.skills.entries:
-                        new_skill = Skill(skill_name=skill.data['skill_name'], duration=skill.data['duration'], profile=new_profile)
-                        db.session.add(new_skill)
+                    for key, value in request.form.items():
+                        if key.startswith('skills-'):
+                            _, index, field = key.split('-')
+                            if field == 'skill_name':
+                                new_skill = Skill(skill_name=value, profile=profile)
+                                db.session.add(new_skill)
+                            elif field == 'duration':
+                                new_skill.duration = value
 
                     db.session.commit()
                     return jsonify(success=True, message="Profile created successfully!")
@@ -200,7 +200,7 @@ def update_profile():
                 print(f"An error occurred: {e}")  # Debugging line
                 return jsonify(success=False, message="An error occurred", error=str(e)), 500
         else:
-            print(form.errors)  # Debugging line
+            errors = {field: error[0] for field, error in form.errors.items()}
             return jsonify(success=False, message="Form validation failed", errors=form.errors), 400
 
     return render_template('dashboard.html', form=form)

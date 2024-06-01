@@ -33,13 +33,17 @@
                         <li><a href="{{ url_for('home') }}#footer"><strong>Contact</strong></a></li>
                     </ul>
                 </nav>
-                <div class="auth-links">
+		<div class="auth-links">
 		  {% if logged_in %}
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="User Avatar" class="user-avatar">
-		  {% else %}
-		      <a href="{{ url_for('login') }}">Log In</a>
-		  {% endif %}
-                </div>
+		      {% if current_user.profile and current_user.profile.avatar %}
+		          <img src="{{ current_user.profile.avatar }}" alt="User Avatar" class="user-avatar">
+	              {% else %}
+			  <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="User Avatar" class="user-avatar">
+		      {% endif %}
+                  {% else %}
+	              <a href="{{ url_for('login') }}">Log In</a>
+                  {% endif %}
+		</div>
             </div>
         </div>
     </header>
@@ -87,7 +91,8 @@
         <section id="update-record" class="tab-content" style="display: none;">
             <div class="container">
                 <h2>Update Your Profile</h2>
-                <form id="update-form" method="POST" action="{{ url_for('update_profile') }}">
+                <form id="update-profile-form" method="POST" enctype="multipart/form-data">
+		  <div id="form-errors" style="color: red; display: none;"></div>
 		  {{ form.hidden_tag() }}  <!-- This line will include the CSRF token -->
 
 		    <input type="hidden" id="profile_id" name="id" value="{{ profile_id }}">
@@ -136,7 +141,7 @@
 		      <input type="text" id="category-other" name="category_other" placeholder="Enter your category" style="display: none;">
 		    </div>
 
-		    <label for="skills"></label>
+		    <label for="skills">Skills:</label>
 		    <div id="skills-container">
 		      {{ form.hidden_tag() }}
 		      {{ form.skills.label }}
@@ -158,11 +163,11 @@
                     <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile" required>
 
                     <!-- GitHub -->
-                    <label for="github">GitHub:</label>
-                    <input type="url" id="github" name="github" placeholder="https://github.com/yourusername" required>
+                    <label for="github">GitHub (Optional):</label>
+                    <input type="url" id="github" name="github" placeholder="https://github.com/yourusername">
 
-                    <label for="reviews">Reviews/Endorsements:</label>
-                    <textarea id="reviews" name="reviews" required></textarea>
+                    <label for="reviews">References/Endorsements (Optional):</label>
+                    <textarea id="reviews" name="reviews"></textarea>
 
                     <button type="submit">Update</button>
                 </form>
