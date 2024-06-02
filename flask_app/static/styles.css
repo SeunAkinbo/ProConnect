@@ -1,507 +1,504 @@
 /* Reset and Basic Styling */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
 }
 
-
 .container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
+  width: 80%;
+  margin: auto;
+  overflow: hidden;
 }
 
 /* Hero Section */
 
 .hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+  font-size: 3rem;
+  margin-bottom: 1rem;
 }
 
 .hero p {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .hero {
-    background: url('https://i.imgur.com/TZYiBvt.png') no-repeat center center;
-    background-size: cover; /* Default background size */
-    color: grey;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    width: 100%; /* Ensure the element takes the full width of the viewport */
-    overflow: hidden; /* Prevents any overflow issues */
+  background: url("https://i.imgur.com/TZYiBvt.png") no-repeat center center;
+  background-size: cover; /* Default background size */
+  color: grey;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%; /* Ensure the element takes the full width of the viewport */
+  overflow: hidden; /* Prevents any overflow issues */
 }
 
 @media (max-width: 768px) {
-    .hero {
-        background-size: contain; /* Adjust background size for smaller screens */
-    }
+  .hero {
+    background-size: contain; /* Adjust background size for smaller screens */
+  }
 }
 
 .hero .btn-container {
-    background: red;
-    color: white;
-    padding: 1rem 2rem;
-    text-decoration: blink;
-    transition: background 0.3s ease;
-    border-radius: 15px;
-    display: inline-block;
-    padding: 15px 25px;
+  background: red;
+  color: white;
+  padding: 1rem 2rem;
+  text-decoration: blink;
+  transition: background 0.3s ease;
+  border-radius: 15px;
+  display: inline-block;
+  padding: 15px 25px;
 }
 
 .hero .btn-container:hover {
-    background: green;
+  background: green;
 }
 
 /* Popup Box Styles */
 .auth-popup {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .auth-popup-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 30px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    text-align: center;
-    border-radius: 15px;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 30px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+  border-radius: 15px;
 }
 
 .close-btn {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .close-btn:hover,
 .close-btn:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 /* Add styles for the buttons inside the popup */
 .auth-popup .btn1 {
-    display: block;
-    width: 100%;
-    padding: 20px;
-    margin: 20px 0;
-    background-color: #B9F9D3;
-    color: #0F6533;
-    border: 1px solid #0F6533;
-    cursor: pointer;
-    font-size: 16px;
-    text-align: center;
-    border-radius: 15px;
+  display: block;
+  width: 100%;
+  padding: 20px;
+  margin: 20px 0;
+  background-color: #b9f9d3;
+  color: #0f6533;
+  border: 1px solid #0f6533;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 15px;
 }
 
 .auth-popup .btn1:hover {
-    background-color: #8CFCBB;
+  background-color: #8cfcbb;
 }
 
 .auth-popup .btn2 {
-    display: block;
-    width: 100%;
-    padding: 20px;
-    margin: 20px 0;
-    background-color: #22B861;
-    color: white;
-    border: 1px solid #0F6533;
-    cursor: pointer;
-    font-size: 16px;
-    text-align: center;
-    border-radius: 15px;
+  display: block;
+  width: 100%;
+  padding: 20px;
+  margin: 20px 0;
+  background-color: #22b861;
+  color: white;
+  border: 1px solid #0f6533;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 15px;
 }
 
 .auth-popup .btn2:hover {
-    background-color: #0F6533;
+  background-color: #0f6533;
 }
 
 .auth-popup .btn3 {
-    display: block;
-    width: 100%;
-    padding: 20px;
-    margin: 20px 0;
-    background-color: white;
-    color: #0F6533;
-    border: 1px solid #0F6533;
-    cursor: pointer;
-    font-size: 16px;
-    text-align: center;
-    border-radius: 15px;
-    
+  display: block;
+  width: 100%;
+  padding: 20px;
+  margin: 20px 0;
+  background-color: white;
+  color: #0f6533;
+  border: 1px solid #0f6533;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 15px;
 }
 
 .auth-popup .btn3:hover {
-    background-color: #B9F9D3;
+  background-color: #b9f9d3;
 }
 
 .auth-popup p {
-    front-size: 14px;
+  front-size: 14px;
 }
 
 /* About Section */
 .about {
-    padding: 2rem 0;
+  padding: 2rem 0;
 }
 
 .about h2 {
-    color: green;
-    text-align: center;
-    margin-bottom: 1rem;
+  color: green;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .about p {
-    text-align: center;
-    font-size: 1.2rem;
+  text-align: center;
+  font-size: 1.2rem;
 }
 
 /* Features Section */
 .features {
-    background: #f9f9f9;
-    padding: 2rem 0;
+  background: #f9f9f9;
+  padding: 2rem 0;
 }
 
 .features h2 {
-    color: green;
-    text-align: center;
-    margin-bottom: 1rem;
+  color: green;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 /* Container for the features to enable horizontal layout */
 .features .features-container {
-    display: flex;
-    flex-wrap: wrap; /* Allows wrapping on smaller screens */
-    justify-content: center; /* Center the features horizontally */
-    gap: 1rem; /* Space between the features */
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  justify-content: center; /* Center the features horizontally */
+  gap: 1rem; /* Space between the features */
 }
 
 .features .feature {
-    position: relative; /* Position relative to contain the pseudo-element */
-    background-size: cover; /* Ensure the background image covers the entire feature */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Prevent background image from repeating */
-    text-align: center;
-    color: white; /* Ensure text is readable over the background image */
-    padding: 3rem;
-    margin: 1rem;
-    flex: 1 1 200px; /* Allows features to grow and shrink, with a minimum width of 200px */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px; /* Optional: Add rounded corners */
-    display: flex; /* Use flexbox to center the content */
-    flex-direction: column; /* Stack text elements vertically */
-    justify-content: center; /* Center the content vertically */
-    height: 500px; /* Set a fixed height for the feature boxes */
-    overflow: hidden; /* Ensure the pseudo-element does not overflow */
+  position: relative; /* Position relative to contain the pseudo-element */
+  background-size: cover; /* Ensure the background image covers the entire feature */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Prevent background image from repeating */
+  text-align: center;
+  color: white; /* Ensure text is readable over the background image */
+  padding: 3rem;
+  margin: 1rem;
+  flex: 1 1 200px; /* Allows features to grow and shrink, with a minimum width of 200px */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px; /* Optional: Add rounded corners */
+  display: flex; /* Use flexbox to center the content */
+  flex-direction: column; /* Stack text elements vertically */
+  justify-content: center; /* Center the content vertically */
+  height: 500px; /* Set a fixed height for the feature boxes */
+  overflow: hidden; /* Ensure the pseudo-element does not overflow */
 }
 
 .features .feature::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */
-    border-radius: inherit; /* Match the border radius of the feature */
-    z-index: 1; /* Ensure it sits above the background image but below the text */
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */
+  border-radius: inherit; /* Match the border radius of the feature */
+  z-index: 1; /* Ensure it sits above the background image but below the text */
 }
 
 .features .feature h3,
 .features .feature a {
-    color: white;
+  color: white;
 }
-
 
 .features .feature h3,
 .features .feature p {
-    position: relative; /* Position relative to be above the overlay */
-    z-index: 2; /* Ensure text is above the overlay */
-    margin: 0.5rem 0; /* Add margin to the text */
+  position: relative; /* Position relative to be above the overlay */
+  z-index: 2; /* Ensure text is above the overlay */
+  margin: 0.5rem 0; /* Add margin to the text */
 }
 
 /* Dashboard Styles */
 .logo {
-    width: 130px; /* Adjust width as needed */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 130px; /* Adjust max height as needed */
-    padding-left: 20px;
+  width: 130px; /* Adjust width as needed */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 130px; /* Adjust max height as needed */
+  padding-left: 20px;
 }
 
 .header-container {
-    width: 95%;
-    margin: auto;
+  width: 95%;
+  margin: auto;
 }
 
 .dashboard-header {
-    background: white;
-    padding: 20px 0;
+  background: white;
+  padding: 20px 0;
 }
 
 .header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .dashboard-heading h1 {
-    font-size: 1.5rem;
-    color: #333;
+  font-size: 1.5rem;
+  color: #333;
 }
 .branding h1 {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 .dashboard-heading h1 {
-    font-size: 1.5rem;
-    color: #333;
+  font-size: 1.5rem;
+  color: #333;
 }
 
 .main-nav ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
 }
 
 .main-nav ul li {
-    margin-right: 50px;
+  margin-right: 50px;
 }
 
 .main-nav ul li a {
-    text-decoration: none;
-    color: navy;
-    font-size: 1.3rem;
+  text-decoration: none;
+  color: navy;
+  font-size: 1.3rem;
 }
 
 .main-nav ul li a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .auth-links {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .auth-links a {
-    text-decoration: none;
-    color: black;
-    font-size: 1rem;
+  text-decoration: none;
+  color: black;
+  font-size: 1rem;
 }
 
 /* Additional styling for responsiveness */
 @media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .main-nav ul {
-        flex-direction: column;
-        gap: 10px;
-    }
+  .main-nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    .auth-links {
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
-    }
+  .auth-links {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
 }
 
 .dashboard-container {
-    display: flex;
-    flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .dashboard-sidebar {
-    background: #f4f4f4;
-    border: 1px solid silver;
-    color: black;
-    padding: 1rem;
-    width: 200px;
-    min-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    margin-left: 20px; /* Add space on the left */
+  background: #f4f4f4;
+  border: 1px solid silver;
+  color: black;
+  padding: 1rem;
+  width: 200px;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 20px; /* Add space on the left */
 }
 
 .dashboard-sidebar nav ul {
-    list-style-type: none;
-    width: 100%;
-    padding: 0;
-    margin: 0;
+  list-style-type: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .dashboard-sidebar nav ul li {
-    margin-top: 2rem;
-    width: 100%;
+  margin-top: 2rem;
+  width: 100%;
 }
 
 .dashboard-sidebar nav ul li a {
-    text-decoration: none;
-    color: white;
-    font-size: 1rem;
-    width: 100%;
-    padding: 0.5rem 1rem;
-    transition: background 0.3s ease;
-    display: block;
-    text-align: center;
+  text-decoration: none;
+  color: white;
+  font-size: 1rem;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  transition: background 0.3s ease;
+  display: block;
+  text-align: center;
 }
 
 .dashboard-sidebar nav ul li a:hover {
-    background-color: navy
-    ;
-    border-radius: 5px;
+  background-color: navy;
+  border-radius: 5px;
 }
 
 .dashboard-content {
-    flex: 1;
-    padding: 20px;
-    min-width: 0; /* Prevents the flex item from shrinking below its content size */
+  flex: 1;
+  padding: 20px;
+  min-width: 0; /* Prevents the flex item from shrinking below its content size */
 }
 
 .tab-content .container {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .tab-content {
-    display: none;
+  display: none;
 }
 
 .tab-content.active {
-    display: block;
+  display: block;
 }
 
 /* Additional styling for responsiveness */
 @media (max-width: 768px) {
-    .dashboard-sidebar {
-        width: 100%;
-        height: auto;
-        margin-left: 0; /* Remove left margin for smaller screens */
-    }
-    .dashboard-content {
-        width: 100%;
-    }
+  .dashboard-sidebar {
+    width: 100%;
+    height: auto;
+    margin-left: 0; /* Remove left margin for smaller screens */
+  }
+  .dashboard-content {
+    width: 100%;
+  }
 }
 
 /* Additional CSS based on user-provided styles */
 
 .tab-content h2 {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .tab-content #search-btn {
-    color: white;
-    background-color: red;
-    flex: 1;
-    padding: 9px 20px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  color: white;
+  background-color: red;
+  flex: 1;
+  padding: 9px 20px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .tab-content #search-btn:hover {
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.20), 0 17px 50px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.2),
+    0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
 .tab-content #search-btn:active {
-    background-color: red;
-    box-shadow: 0 1px silver;
-    transform: translateY(1px);
+  background-color: red;
+  box-shadow: 0 1px silver;
+  transform: translateY(1px);
 }
 
 #category-dropdown {
-    flex: 1;
-    padding: 8px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: grey;
-    width: 40%;
+  flex: 1;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: grey;
+  width: 40%;
 }
 
 #fields-dropdown {
-    flex: 1;
-    padding: 8px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    color: grey;
-    width: 40%;
+  flex: 1;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: grey;
+  width: 40%;
 }
 /* Team View */
 .team-member {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .team-member img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 1rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 1rem;
 }
 
 .team-info h3 {
-    margin: 0;
-    font-size: 1.2rem;
+  margin: 0;
+  font-size: 1.2rem;
 }
 
 .team-info p {
-    margin: 0;
-    color: #555;
+  margin: 0;
+  color: #555;
 }
 
 /* Update Your Profile Section */
 #update-record {
-    display: none;
-    padding: 20px;
+  display: none;
+  padding: 20px;
 }
 
 #update-record .container {
-    max-width: 600px;
-    margin: 0 auto;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 #update-record h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
+  margin-top: 0;
+  margin-bottom: 20px;
 }
 
 #update-record label {
-    display: block;
-    margin-bottom: 10px;
+  display: block;
+  margin-bottom: 10px;
 }
 
 #update-record input[type="text"],
@@ -509,285 +506,283 @@ body {
 #update-record input[type="url"],
 #update-record textarea,
 #update-record select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 #update-record button[type="submit"],
 #update-record #add-skill {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 #update-record button[type="submit"]:hover,
 #update-record #add-skill:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 /* Profile Container */
 #profiles-container {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .profile {
-    display: flex;
-    align-items: center;
-    background: #f9f9f9;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-    transition: box-shadow 0.3s ease;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
 .profile:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .profile img {
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    margin-right: 1rem;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-right: 1rem;
 }
 
 .profile .profile-info {
-    flex: 1;
+  flex: 1;
 }
 
 .profile .profile-info h3 {
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .profile .profile-info p {
-    margin: 0.5rem 0;
+  margin: 0.5rem 0;
 }
 
 .profile .profile-info a {
-    color: #f44336;
-    text-decoration: underline;
+  color: #f44336;
+  text-decoration: underline;
 }
 
 .profile .profile-info a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Detailed Profile View */
 .profile-details {
-    background: #fff;
-    padding: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-top: 1rem;
+  background: #fff;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 1rem;
 }
 
 .profile-details h3 {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .profile-details p {
-    margin: 0.5rem 0;
+  margin: 0.5rem 0;
 }
 
 .profile-details ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .profile-details ul li {
-    margin: 0.5rem 0;
+  margin: 0.5rem 0;
 }
 
 /* Modal styles */
 body {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 .tabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
 }
 
 .tab-link {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
 }
 
 .tab-link:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 #profiles-container .profile {
-    display: flex;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
+  display: flex;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
 #profiles-container .profile img {
-    width: 100px;
-    height: 100px;
-    margin-right: 10px;
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
 }
 
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-    background-color: white;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    border-radius: 10px;
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 10px;
 }
 
 .modal .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .modal .close:hover,
 .modal .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .modal-profile img {
-    width: 100px;
-    height: 100px;
-    margin-right: 10px;
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
 }
 
 .modal-profile h3 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .btn-default {
-    display: block;
-    margin: 10px 0;
-    padding: 10px 20px;
-    background-color: silver;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  display: block;
+  margin: 10px 0;
+  padding: 10px 20px;
+  background-color: silver;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .btn-success {
-    display: block;
-    margin: 10px 0;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  display: block;
+  margin: 10px 0;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .btn-default:hover {
-    background-color: #B0ADAD;
+  background-color: #b0adad;
 }
 
 .btn-success:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
 
-
 #contact-info p {
-    margin: 5px 0;
+  margin: 5px 0;
 }
 
 /* Testimonials Section */
 .testimonials {
-    padding: 2rem 0;
+  padding: 2rem 0;
 }
 
 .testimonials h2 {
-    color: green;
-    text-align: center;
-    margin-bottom: 1rem;
+  color: green;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .testimonials .testimonial {
-    text-align: center;
-    margin-bottom: 1rem;
-    background: #f9f9f9;
-    padding: 1rem;
-    border-radius: 5px;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 5px;
 }
-
 
 /* Footer */
 .footer {
-    background: #333;
-    color: white;
-    text-align: center;
-    padding: 1rem 0;
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
 }
 
 /* General body styles for login and register */
 body.auth-page {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 /* Container styling for login and register */
 .auth-container {
-    background-color: #ffffff;
-    padding: 2em;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #cccccc;
+  background-color: #ffffff;
+  padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
 }
 
 /* Form group styling */
 .auth-form-group {
-    margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 /* Label styling */
 .auth-form-group label {
-    display: block;
-    margin-bottom: 0.5em;
-    font-weight: bold;
+  display: block;
+  margin-bottom: 0.5em;
+  font-weight: bold;
 }
 
 /* Input and textarea styling */
@@ -796,92 +791,92 @@ body.auth-page {
 .auth-form-group input[type="email"],
 .auth-form-group input[type="url"],
 .auth-form-group textarea {
-    width: 100%;
-    padding: 0.8em;
-    margin-bottom: 0.5em;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-size: 1em;
+  width: 100%;
+  padding: 0.8em;
+  margin-bottom: 0.5em;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1em;
 }
 
 /* Button styling */
 .auth-btn {
-    display: inline-block;
-    padding: 0.8em 1.2em;
-    font-size: 1em;
-    font-weight: bold;
-    text-align: center;
-    color: #ffffff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
+  display: inline-block;
+  padding: 0.8em 1.2em;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .auth-btn-primary {
-    background-color: #007bff;
+  background-color: #007bff;
 }
 
 .auth-btn:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 /* Alert message styling */
 .auth-alert {
-    padding: 0.8em;
-    margin-bottom: 1em;
-    border-radius: 4px;
-    font-size: 0.9em;
+  padding: 0.8em;
+  margin-bottom: 1em;
+  border-radius: 4px;
+  font-size: 0.9em;
 }
 
 .auth-alert-success {
-    background-color: #d4edda;
-    color: #155724;
+  background-color: #d4edda;
+  color: #155724;
 }
 
 .auth-alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
+  background-color: #f8d7da;
+  color: #721c24;
 }
 
 /* Link styling */
 .auth-link {
-    color: #007bff;
-    text-decoration: none;
+  color: #007bff;
+  text-decoration: none;
 }
 
 .auth-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Styles for the auth links */
 .auth-links {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .auth-links a {
-    margin-left: 15px;
-    padding: 10px 15px;
-    background-color: #007BFF;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
+  margin-left: 15px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
 }
 
 .auth-links a:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 /* Styles for the user avatar */
 .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-    margin-left: 15px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  margin-left: 15px;
 }

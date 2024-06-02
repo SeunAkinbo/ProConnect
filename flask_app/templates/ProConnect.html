@@ -1,90 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ProConnect</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Hero Section -->
     <header class="hero">
       <div class="container">
-	{% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="auth-alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-            <h1>ProConnect</h1>
-            <p>Unlock your potential. Connect, exchange skills, and collaborate.</p>
-            <button id="get-started-btn" class="btn-container"><strong>Get Started</strong></button>
-        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %}
+        <div class="auth-alert-{{ category }}">{{ message }}</div>
+        {% endfor %} {% endif %} {% endwith %}
+        <h1>ProConnect</h1>
+        <p>Unlock your potential. Connect, exchange skills, and collaborate.</p>
+        <button id="get-started-btn" class="btn-container">
+          <strong>Get Started</strong>
+        </button>
+      </div>
     </header>
 
     <!-- Popup Box for Authentication Options -->
     <div id="auth-popup" class="auth-popup">
-        <div class="auth-popup-content">
-            <span class="close-btn">&times;</span>
-            <h2>Welcome to ProConnect</h2>
-	    <p>Login or Signup to create profile, connect, exchange skills, and collaborate.</p>
-            <button id="login-btn" class="btn1">Login</button>
-            <button id="signup-btn" class="btn2">Sign Up</button>
-            <button id="continue-btn" class="btn3">Stay Logged Out</button>
-        </div>
+      <div class="auth-popup-content">
+        <span class="close-btn">&times;</span>
+        <h2>Welcome to ProConnect</h2>
+        <p>
+          Login or Signup to create profile, connect, exchange skills, and
+          collaborate.
+        </p>
+        <button id="login-btn" class="btn1">Login</button>
+        <button id="signup-btn" class="btn2">Sign Up</button>
+        <button id="continue-btn" class="btn3">Stay Logged Out</button>
+      </div>
     </div>
 
     <!-- About Section -->
     <section id="about" class="about">
-        <div class="container">
-            <h2>About ProConnect</h2>
-            <p>ProConnect is a revolutionary digital platform designed to address the pressing issue of youth unemployment, particularly among graduates, by harnessing the power of skill exchange and collaboration.</p>
-        </div>
+      <div class="container">
+        <h2>About ProConnect</h2>
+        <p>
+          ProConnect is a revolutionary digital platform designed to address the
+          pressing issue of youth unemployment, particularly among graduates, by
+          harnessing the power of skill exchange and collaboration.
+        </p>
+      </div>
     </section>
 
     <!-- Features Section -->
     <section id="features" class="features">
-        <h2>Our Features</h2>
-        <div class="features-container">
-            <div class="feature" style="background-image: url('https://i.imgur.com/3oIu0vu.jpg');">
-                <h3><a href="{{ url_for('dashboard') }}#skill-search">Skill Exchange Marketplace</a></h3>
-                <p>Exchange your skills for services or assistance from others.</p>
-            </div>
-            <div class="feature" style="background-image: url('https://i.imgur.com/dAAFICP.png');">
-                <h3><a href="{{ url_for('dashboard') }}#team-view">Project Collaboration</a></h3>
-                <p>Collaborate on projects and explore entrepreneurial ventures.</p>
-            </div>
-            <div class="feature" style="background-image: url('https://i.imgur.com/E8fYaq2.png');">
-                <h3>Start-Up Ideas</h3>
-                <p>Get suggestions for start-up ideas based on your skills and interests. <strong>(Coming Soon)</strong></p>
-            </div>
+      <h2>Our Features</h2>
+      <div class="features-container">
+        <div
+          class="feature"
+          style="background-image: url('https://i.imgur.com/3oIu0vu.jpg')"
+        >
+          <h3>
+            <a href="{{ url_for('dashboard') }}#skill-search"
+              >Skill Exchange Marketplace</a
+            >
+          </h3>
+          <p>Exchange your skills for services or assistance from others.</p>
         </div>
+        <div
+          class="feature"
+          style="background-image: url('https://i.imgur.com/dAAFICP.png')"
+        >
+          <h3>
+            <a href="{{ url_for('dashboard') }}#team-view"
+              >Project Collaboration</a
+            >
+          </h3>
+          <p>Collaborate on projects and explore entrepreneurial ventures.</p>
+        </div>
+        <div
+          class="feature"
+          style="background-image: url('https://i.imgur.com/E8fYaq2.png')"
+        >
+          <h3>Start-Up Ideas</h3>
+          <p>
+            Get suggestions for start-up ideas based on your skills and
+            interests. <strong>(Coming Soon)</strong>
+          </p>
+        </div>
+      </div>
     </section>
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials">
-        <div class="container">
-            <h2>What Our Users Say</h2>
-            <div class="testimonial">
-                <p>"ProConnect helped me find collaborators for my start-up idea. It's an invaluable platform for graduates!"</p>
-                <p>- John Doe</p>
-            </div>
-            <div class="testimonial">
-                <p>"I exchanged my graphic design skills for web development help. ProConnect is a game-changer!"</p>
-                <p>- Jane Smith</p>
-            </div>
+      <div class="container">
+        <h2>What Our Users Say</h2>
+        <div class="testimonial">
+          <p>
+            "ProConnect helped me find collaborators for my start-up idea. It's
+            an invaluable platform for graduates!"
+          </p>
+          <p>- John Doe</p>
         </div>
+        <div class="testimonial">
+          <p>
+            "I exchanged my graphic design skills for web development help.
+            ProConnect is a game-changer!"
+          </p>
+          <p>- Jane Smith</p>
+        </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 ProConnect. All rights reserved.</p>
-        </div>
+      <div class="container">
+        <p>&copy; 2024 ProConnect. All rights reserved.</p>
+      </div>
     </footer>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-</body>
+  </body>
 </html>
