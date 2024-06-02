@@ -7,9 +7,14 @@
 
 - Font Weights
 Default: 400
+Medium: 500
+Semi-bold: 600
+Bold: 700
 
 - Line Height (em):
 Deafult: 1
+Small: 1.05
+Paragraph default: 1.6
 
 - SPACING SYSTEM (px)
 2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128
@@ -17,8 +22,8 @@ Deafult: 1
 --- 02 COLORS
 
 - Primary: #e67e22
-- tints
-- Shades
+- Tints: #fdf2e9
+- Shades: #cf711f
 - Accents
 - Greys
 #555
@@ -27,7 +32,7 @@ Deafult: 1
 --- 03 SHADOWS
 
 --- 04 BORDER-RADIUS
-
+9px
 --- 05 WHITE SPACE
 */
 * {
