@@ -64,8 +64,14 @@
   background-color: #fff;
 }
 
+.step-img-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .step-img {
-  width: 80%;
+  width: 75%;
 }
 
 .step-number {
