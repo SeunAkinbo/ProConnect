@@ -85,7 +85,31 @@ $(document).ready(function() {
             });
         }
     });
-    
+
+    $('#field').change(function() {
+        if ($(this).val() == 'other') {
+            $('#field-other').show();
+        } else {
+            $('#field-other').hide();
+        }
+    });
+
+    $('#category').change(function() {
+        if ($(this).val() == 'other') {
+            $('#category-other').show();
+        } else {
+            $('#category-other').hide();
+        }
+    });
+
+    // Show custom fields if they were previously selected
+    if ($('#field').val() == 'other') {
+        $('#field-other').show();
+    }
+    if ($('#category').val() == 'other') {
+        $('#category-other').show();
+    }
+
     $('#add-skill').click(function() {
         var skillIndex = $('#skills-container .skill-entry').length;
 
@@ -93,15 +117,26 @@ $(document).ready(function() {
             <div class="skill-entry">
                 <input type="text" name="skills-${skillIndex}-skill_name" placeholder="Skill" required>
                 <input type="text" name="skills-${skillIndex}-duration" placeholder="Duration (e.g., 5 years)" required>
+                <button type="button" class="remove-skill">Remove</button>
             </div>
         `;
         $('#skills-container').append(newSkillEntry);
     });
 
-    // Remove Skill button click event
     $('#skills-container').on('click', '.remove-skill', function() {
         $(this).closest('.skill-entry').remove();
+        updateSkillIndexes();
     });
+
+    function updateSkillIndexes() {
+        $('#skills-container .skill-entry').each(function(index) {
+            $(this).find('input[name^="skills-"]').each(function() {
+                var name = $(this).attr('name');
+                var newName = name.replace(/skills-\d+-/, `skills-${index}-`);
+                $(this).attr('name', newName);
+            });
+        });
+    }
 
     // Function to get profiles based on selected category and skill
     function getProfiles(category) {
@@ -223,9 +258,9 @@ $(document).ready(function() {
 	    $(this).toggleClass('btn-default btn-success');
 	});
 
-	// Add click event for "Collaborate" button
+	// Collaborate button click handler
 	$('#collaborate-btn').on('click', function() {
-            if (logged_in) {
+	    if (logged_in) {
 		addToTeamView(profile);
 		alert('Profile added to your team!');
             } else {
@@ -233,7 +268,78 @@ $(document).ready(function() {
             }
 	    $(this).toggleClass('btn-default btn-success');
 	});
+
+/*	$('#collaborate-btn').on('click', function() {
+    if (logged_in) {
+        var profileId = $(this).data('profile-id');
+
+        $.post('/collaborate', { profile_id: profileId }, function(response) {
+            if (response.success) {
+                addToTeamView(profile);
+                alert(response.message);
+            } else {
+                alert(response.message);
+            }
+        });
+    } else {
+        window.location.href = '/login';
     }
+    $(this).toggleClass('btn-default btn-success');
+}); */
+    }
+    
+    /* Remove team member button click handler
+    $('#team-view').on('click', '.remove-team-member-btn', function() {
+        var profileId = $(this).data('profile-id');
+        
+        $.post('/remove_team_member', { profile_id: profileId }, function(response) {
+            if (response.success) {
+                alert(response.message);
+                updateTeamSection();
+            } else {
+                alert(response.message);
+            }
+        });
+    });
+
+    // Add skill button click handler
+    $('#add-skill').click(function() {
+        var skillIndex = $('#skills-container .skill-entry').length;
+
+        var newSkillEntry = `
+            <div class="skill-entry">
+                <input type="text" name="skills-${skillIndex}-skill_name" placeholder="Skill" required>
+                <input type="text" name="skills-${skillIndex}-duration" placeholder="Duration (e.g., 5 years)" required>
+                <button type="button" class="remove-skill">Remove</button>
+            </div>
+        `;
+        $('#skills-container').append(newSkillEntry);
+    }); */
+
+    // Google meeting button click handler
+    $('#start-google-meeting').click(function() {
+	var MeetingUrl = "https://meet.google.com/calling/";
+	// Redirect to the google meeting
+	window.location.href = MeetingUrl;
+    });
+
+    /* function updateTeamSection() {
+        // Logic to update the team section (e.g., fetch the latest team members and update the DOM)
+        $.get('/get_team_members', function(teamMembers) {
+            var teamSection = $('#team-section');
+            teamSection.empty();
+
+            teamMembers.forEach(function(member) {
+                teamSection.append(`
+                    <div class="team-member">
+                        <p>${member.name}</p>
+                        <button type="button" class="remove-team-member-btn" data-profile-id="${member.id}">Remove</button>
+                    </div>
+                `);
+            });
+        });
+    }
+    */
     // Function to add profile to team view
     function addToTeamView(profile) {
         var teamContainer = $('#team-container');
@@ -244,14 +350,23 @@ $(document).ready(function() {
                     <h3>${profile.name}</h3>
                     <p>${profile.description}</p>
                 </div>
+                <div id="team-contacts"">                                                                 
+                    <p>Email: <a href="mailto:${profile.email}">${profile.email}</a></p>                                 
+                    <p>LinkedIn: <a href="${profile.linkedin}" target="_blank">${profile.linkedin}</a></p>               
+                </div>
+                <button class="delete-member">Delete</button>
             </div>
         `;
-        teamContainer.append(teamHtml);
+         teamContainer.append(teamHtml);
     }
+
+    $(document).on('click', '.delete-member', function() {
+	$(this).closest('.team-member').remove();
+    });
 
     // Add click event for user avatar to log out
     $('.user-avatar').on('click', function() {
-        window.location.href = '/logout';
+         $(this).siblings('.dropdown-menu').toggle();
     });
 
     // Close modal on click of the close button

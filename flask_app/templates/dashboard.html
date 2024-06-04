@@ -22,7 +22,7 @@
             <div class="header-content">
               <div class="branding">
 		<a href="{{ url_for('home') }}">
-		  <img src="https://i.imgur.com/OWLPMLU.png" alt="ProConnect Logo" class="logo"/>
+		  <img src="https://github.com/SeunAkinbo/ProConnect/blob/master/flask_app/static/img/Logo-Thick.png?raw=true" alt="ProConnect Logo" class="logo"/>
 		</a>    
                 </div>
                 <nav class="main-nav">
@@ -34,15 +34,26 @@
                     </ul>
                 </nav>
 		<div class="auth-links">
-		  {% if logged_in %}
-		      {% if current_user.profile and current_user.profile.avatar %}
-		          <img src="{{ current_user.profile.avatar }}" alt="User Avatar" class="user-avatar">
-	              {% else %}
-			  <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="User Avatar" class="user-avatar">
-		      {% endif %}
-                  {% else %}
-	              <a href="{{ url_for('login') }}">Log In</a>
-                  {% endif %}
+		    {% if logged_in %}
+		        <div class="dropdown">
+			  <div class="dropdown-toggle">
+			     {% if current_user.profile and current_user.profile.avatar %}
+			         <img src="{{ current_user.profile.avatar }}" alt="User Avatar" class="user-avatar">
+		             {% else %}
+				 <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" alt="User Avatar" class="user-avatar">
+		             {% endif %}
+			  </div>
+			  <div class="dropdown-menu">
+			      <a href="{{ url_for('logout') }}">Sign Out</a>
+			      <form action="{{ url_for('delete_account') }}" method="POST">
+				{{ form.hidden_tag() }}
+				<input type="submit" value="Delete Account" class="delete-account-button">
+			      </form>
+			  </div> 
+			 </div>
+		     {% else %}
+			 <a href="{{ url_for('login') }}" class="login-account-button">Log In</a>
+		     {% endif %}
 		</div>
             </div>
         </div>
@@ -82,97 +93,101 @@
         <!-- Team View Section -->
         <section id="team-view" class="tab-content" style="display: none;">
             <div class="container">
-                <h2>Team View</h2>
+                <h2>Your Team</h2>
                 <div id="team-container"></div>
+		<button id="start-google-meeting">Start Meeting</button>
             </div>
         </section>
 
         <!-- Update Record Section -->
-        <section id="update-record" class="tab-content" style="display: none;">
-            <div class="container">
-                <h2>Update Your Profile</h2>
-                <form id="update-profile-form" method="POST" enctype="multipart/form-data">
-		  <div id="form-errors" style="color: red; display: none;"></div>
-		  {{ form.hidden_tag() }}  <!-- This line will include the CSRF token -->
+	<section id="update-record" class="tab-content" style="display: none;">
+	  <div class="container">
+            <h2>Update Your Profile</h2>
+            <form id="update-profile-form" method="POST" enctype="multipart/form-data">
+              <div id="form-errors" style="color: red; display: none;"></div>
+              {{ form.hidden_tag() }} <!-- This line will include the CSRF token -->
 
-		    <input type="hidden" id="profile_id" name="id" value="{{ profile_id }}">
-			  
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
+              <input type="hidden" id="profile_id" name="id" value="{{ profile.id if profile else '' }}">
 
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" required></textarea>
+              <label for="name">Name:</label>
+              <input type="text" id="name" name="name" value="{{ profile.name if profile else '' }}" required>
 
-                    <label for="avatar">Avatar:</label>
-                    <input type="file" id="avatar" name="avatar" accept="image/*">
+              <label for="description">Description:</label>
+              <textarea id="description" name="description" required>{{ profile.description if profile else '' }}</textarea>
 
-                    <label for="address">Address:</label>
-                    <input type="text" id="address" name="address" required>
+              <label for="avatar">Avatar:</label>
+              <input type="file" id="avatar" name="avatar" accept="image/*">
 
-                    <label for="payment">Payment Option:</label>
-                    <select id="payment" name="payment" required>
-                        <option value="currency">Currency</option>
-                        <option value="skill">Skill</option>
-                        <option value="both">Both</option>
-                    </select>
+              <label for="address">Address:</label>
+              <input type="text" id="address" name="address" value="{{ profile.address if profile else '' }}" required>
 
-                    <label for="availability">Availability:</label>
-                    <select id="availability" name="availability" required>
-                        <option value="physical">Physical</option>
-                        <option value="remote">Remote</option>
-                        <option value="both">Both</option>
-                    </select>
+              <label for="payment">Payment Option:</label>
+              <select id="payment" name="payment" required>
+                <option value="currency" {% if profile and profile.payment == 'currency' %}selected{% endif %}>Currency</option>
+                <option value="skill" {% if profile and profile.payment == 'skill' %}selected{% endif %}>Skill</option>
+                <option value="both" {% if profile and profile.payment == 'both' %}selected{% endif %}>Both</option>
+              </select>
 
-		    <div>
-		      <label for="field">Field:</label>
-		      <select id="field" name="field" required>
-			  {% for field in fields_data %}
-			      <option value="{{ field.id }}">{{ field.name }}</option>
-			  {% endfor %}
-			      <option value="other">Other</option>
-		      </select>
-		      <input type="text" id="field-other" name="field_other" placeholder="Enter your field" style="display: none;">
-		    </div>
-		    <div>
-		      <label for="category">Category:</label>
-		      <select id="category" name="category" required>
-			<!-- Options will be populated by script.js -->
-		      </select>
-		      <input type="text" id="category-other" name="category_other" placeholder="Enter your category" style="display: none;">
-		    </div>
+              <label for="availability">Availability:</label>
+              <select id="availability" name="availability" required>
+                <option value="physical" {% if profile and profile.availability == 'physical' %}selected{% endif %}>Physical</option>
+                <option value="remote" {% if profile and profile.availability == 'remote' %}selected{% endif %}>Remote</option>
+                <option value="both" {% if profile and profile.availability == 'both' %}selected{% endif %}>Both</option>
+              </select>
 
-		    <label for="skills">Skills:</label>
-		    <div id="skills-container">
-		      {{ form.hidden_tag() }}
-		      {{ form.skills.label }}
-		      {% for skill in form.skills %}
-		          <div class="skill-entry">
-			    <input type="text" name="skills-{{ loop.index0 }}-skill_name" placeholder="Skill" required>
-			    <input type="text" name="skills-{{ loop.index0 }}-duration" placeholder="Duration (e.g., 5 years)" required>
-			  </div>
-		       {% endfor %}
-		    </div>
-		    <button type="button" id="add-skill">Add Skill</button>
+              <div>
+                <label for="field">Field:</label>
+                <select id="field" name="field" required>
+                    {% for field in fields_data %}
+                        <option value="{{ field.id }}" {% if profile and profile.field_id == field.id %}selected{% endif %}>{{ field.name }}</option>
+                    {% endfor %}
+                    <option value="other">Other</option>
+                </select>
+                <input type="text" id="field-other" name="field_other" placeholder="Enter your field" style="display: none;">
+              </div>
 
-                    <!-- Email -->
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+              <div>
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    {% for category in categories_data %}
+                        <option value="{{ category.id }}" {% if profile and profile.category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
+                    {% endfor %}
+                    <option value="other">Other</option>
+                </select>
+                <input type="text" id="category-other" name="category_other" placeholder="Enter your category" style="display: none;">
+              </div>
 
-                    <!-- LinkedIn -->
-                    <label for="linkedin">LinkedIn:</label>
-                    <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile" required>
+              <label for="skills">Skills:</label>
+              <div id="skills-container">
+                {% for skill in profile.skills %}
+                    <div class="skill-entry">
+                        <input type="text" name="skills-{{ loop.index0 }}-skill_name" placeholder="Skill" value="{{ skill.skill_name }}" required>
+                        <input type="text" name="skills-{{ loop.index0 }}-duration" placeholder="Duration (e.g., 5 years)" value="{{ skill.duration }}" required>
+			<button type="button" class="remove-skill">Remove</button>
+                    </div>
+                {% endfor %}
+              </div>
+              <button type="button" id="add-skill">Add Skill</button>
 
-                    <!-- GitHub -->
-                    <label for="github">GitHub (Optional):</label>
-                    <input type="url" id="github" name="github" placeholder="https://github.com/yourusername">
+              <!-- Email -->
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" value="{{ profile.email if profile else '' }}" required>
 
-                    <label for="reviews">References/Endorsements (Optional):</label>
-                    <textarea id="reviews" name="reviews"></textarea>
+              <!-- LinkedIn -->
+              <label for="linkedin">LinkedIn:</label>
+              <input type="url" id="linkedin" name="linkedin" value="{{ profile.linkedin if profile else '' }}" placeholder="https://linkedin.com/in/yourprofile" required>
 
-                    <button type="submit">Update</button>
-                </form>
-            </div>
-        </section>
+              <!-- GitHub -->
+              <label for="github">GitHub (Optional):</label>
+              <input type="url" id="github" name="github" value="{{ profile.github if profile else '' }}" placeholder="https://github.com/yourusername">
+
+              <label for="reviews">References/Endorsements (Optional):</label>
+              <textarea id="reviews" name="reviews">{{ profile.reviews if profile else '' }}</textarea>
+
+              <button type="submit">Update</button>
+            </form>
+	  </div>
+	</section>
       </main>
     </div>
 

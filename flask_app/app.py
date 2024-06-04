@@ -48,7 +48,20 @@ def dashboard():
         }
         for field in fields
     ]
-    return render_template('dashboard.html', logged_in=current_user.is_authenticated, form=form, fields_data=fields_data)
+
+    # Query the database for the current user's profile if the user is authenticated
+    profile = None
+    if current_user.is_authenticated:
+        profile = Profile.query.filter_by(user_id=current_user.id).first()
+    # Handle the case where the user is not authenticated (e.g., provide a default profile)
+    else:
+        profile = {
+            'id': None,
+            'name': 'Guest',
+            # Add other default profile fields as needed
+        }
+    
+    return render_template('dashboard.html', logged_in=current_user.is_authenticated, form=form, fields_data=fields_data, profile=profile)
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
@@ -88,6 +101,17 @@ def login():
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', form=form)
 
+@app.route('/delete_account', methods=['POST'])
+@login_required
+def delete_account():
+    if current_user.profile:
+        db.session.delete(current_user.profile)
+    db.session.delete(current_user)
+    db.session.commit()
+    logout_user()
+    flash('Your account has been deleted.', 'success')
+    return redirect(url_for('home'))
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -114,18 +138,41 @@ def update_profile():
     form.field.choices = get_field_choices()
     form.category.choices = get_category_choices()
 
+    # Check if a profile already exists for the current user
+    profile = Profile.query.filter_by(user_id=current_user.id).first()
+
+    if request.method == 'GET' and profile:
+        # Populate the form with the existing profile data
+        form.name.data = profile.name
+        form.email.data = profile.email
+        form.description.data = profile.description
+        form.address.data = profile.address
+        form.payment.data = profile.payment
+        form.availability.data = profile.availability
+        form.linkedin.data = profile.linkedin
+        form.github.data = profile.github
+        form.reviews.data = profile.reviews
+        form.category.data = profile.category_id
+        
+
+        # Populate skills
+        for skill in profile.skills:
+            form.skills.append_entry({
+                'skill_name': skill.skill_name,
+                'duration': skill.duration
+            })
+
     if request.method == 'POST':
         if form.validate_on_submit():
             try:
-
-                avatar_url = None
-                
-                if 'avatar' in request.files:
+                if 'avatar' in request.files and request.files['avatar']:
                     file = request.files['avatar']
                     filename = secure_filename(file.filename)
                     file.save(os.path.join(app.config['UPLOADED_AVATARS_DEST'], filename))
                     avatar_url = url_for('uploaded_file', filename=filename)
-                    
+                else :
+                    avatar_url = None
+                
                 category_id = form.category.data
 
                 if category_id == 'other':
@@ -134,9 +181,6 @@ def update_profile():
                     db.session.add(custom_category)
                     db.session.commit()
                     category_id = custom_category.id
-
-                # Check if a profile already exists for the current user
-                profile = Profile.query.filter_by(user_id=current_user.id).first()
 
                 if profile:
                     # Update the existing profile
@@ -156,13 +200,14 @@ def update_profile():
                     profile.skills.clear()
                     for key, value in request.form.items():
                         if key.startswith('skills-'):
-                            _, index, field = key.split('-')
+                            parts = key.split('-')
+                            index = int(parts[1])
+                            field = parts[2]
                             if field == 'skill_name':
-                                new_skill = Skill(skill_name=value, profile=profile)
+                                skill_name = value
+                                duration = request.form.get(f'skills-{index}-duration')
+                                new_skill = Skill(skill_name=skill_name, duration=duration, profile=profile)
                                 db.session.add(new_skill)
-                            elif field == 'duration':
-                                new_skill.duration = value
-                    
 
                     db.session.commit()
                     return jsonify(success=True, message="Profile updated successfully!")
@@ -187,23 +232,26 @@ def update_profile():
 
                     for key, value in request.form.items():
                         if key.startswith('skills-'):
-                            _, index, field = key.split('-')
+                            parts = key.split('-')
+                            index = int(parts[1])
+                            field = parts[2]
                             if field == 'skill_name':
-                                new_skill = Skill(skill_name=value, profile=profile)
+                                skill_name = value
+                                duration = request.form.get(f'skills-{index}-duration')
+                                new_skill = Skill(skill_name=skill_name, duration=duration, profile=new_profile)
                                 db.session.add(new_skill)
-                            elif field == 'duration':
-                                new_skill.duration = value
 
                     db.session.commit()
                     return jsonify(success=True, message="Profile created successfully!")
             except Exception as e:
-                print(f"An error occurred: {e}")  # Debugging line
+                print(f"An error occurred: {e}")
                 return jsonify(success=False, message="An error occurred", error=str(e)), 500
         else:
             errors = {field: error[0] for field, error in form.errors.items()}
             return jsonify(success=False, message="Form validation failed", errors=form.errors), 400
 
-    return render_template('dashboard.html', form=form)
+    return render_template('dashboard.html', form=form, profile=profile)
+
 
 
 @app.route('/profiles', methods=['GET'])
@@ -243,6 +291,35 @@ def get_profiles():
         profiles_data.append(profile_data)
 
     return jsonify(profiles_data)
+
+@app.route('/collaborate', methods=['POST'])
+@login_required
+def collaborate():
+    profile_id = request.form.get('profile_id')
+    team_member = Profile.query.get(profile_id)
+    
+    if team_member in current_user.team:
+        return jsonify(success=False, message="This person is already part of your team.")
+    
+    current_user.team.append(team_member)
+    db.session.commit()
+    
+    return jsonify(success=True, message="Profile added to your team.")
+
+
+@app.route('/remove_team_member', methods=['POST'])
+@login_required
+def remove_team_member():
+    profile_id = request.form.get('profile_id')
+    team_member = Profile.query.get(profile_id)
+    
+    if team_member in current_user.team:
+        current_user.team.remove(team_member)
+        db.session.commit()
+        return jsonify(success=True, message="Team member removed.")
+    
+    return jsonify(success=False, message="Team member not found.")
+
 
 if __name__ == '__main__':
     with app.app_context():

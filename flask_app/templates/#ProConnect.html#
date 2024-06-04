@@ -18,7 +18,7 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#about">Contact</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
     </header>
@@ -87,36 +87,8 @@
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
-            <h2>ProConnect: Where Skills Become Your Currency</h2>
-            <p>
-              In today's world, skills are more valuable than ever. But traditional job markets often limit your potential. ProConnect disrupts the status quo. We believe skill is currency, and our platform empowers you to exchange your expertise to build a brighter future.
-            </p>
-            <p>
-              <b>Imagine:</b>
-            </p>
-            <ul>
-              <li>Having a brilliant startup idea but lacking the coding skills to bring it to life.</li>
-              <li>Being a talented designer in need of a marketing expert to launch your freelance business.</li>
-              <li>Possessing valuable data analysis skills but yearning to contribute to a social impact project.</li>
-            </ul>
-            <p>
-              ProConnect connects you with the missing pieces. Find skilled individuals who share your vision, collaborate on projects, and build something extraordinary together. Our platform fosters partnerships based on mutual exchange, transcending the limitations of traditional currency.
-            </p>
-            <p>
-              <b>With ProConnect, you can:</b>
-            </p>
-            <ul>
-              <li>Showcase your skills: Create a detailed profile to highlight your expertise and experience.</li>
-              <li>Find the perfect match: Search for individuals with complementary skills to complete your team.</li>
-              <li>Collaborate seamlessly: Our platform facilitates communication and project management.</li>
-              <li>Build your network: Connect with like-minded individuals and forge lasting partnerships.</li>
-            </ul>
-            <p>
-              ProConnect is more than just a platform; it's a community. A community where skills are valued, collaboration thrives, and anyone can turn their dreams into reality.
-            </p>
-            <p>
-              Join us today and unlock the true potential of your skills!
-            </p>
+            <h2>About ProConnect</h2>
+            <p>ProConnect is a revolutionary digital platform designed to address the pressing issue of youth unemployment, particularly among graduates, by harnessing the power of skill exchange and collaboration.</p>
         </div>
 
         <!-- Our Team Section -->
@@ -169,12 +141,12 @@
         <div class="container">
             <h2>What Our Users Say</h2>
             <div class="testimonial">
-                <p>"ProConnect completely changed the game for me! As a freelancer, finding consistent projects was a constant struggle. But with ProConnect, I was able to connect with a talented web developer who needed help with marketing his services. We formed a fantastic partnership, and now we work together on a regular basis.  ProConnect helped me find the perfect collaborator and build a successful freelance business based on skill exchange, not just money."</p>
-                <p>- Sarah Jones, Marketing Specialist</p>
+                <p>"ProConnect helped me find collaborators for my start-up idea. It's an invaluable platform for graduates!"</p>
+                <p>- John Doe</p>
             </div>
             <div class="testimonial">
-                <p>"I had a great startup idea, but I lacked the design expertise to create a user-friendly interface. ProConnect was a lifesaver!  I found a fantastic graphic designer through the platform, and together we turned my idea into a reality.  The skill exchange aspect was amazing. I offered my coding skills in exchange for her design work, and it was a win-win situation for both of us. ProConnect is a fantastic platform for anyone looking to collaborate, share skills, and turn their dreams into reality."</p>
-                <p>-  David Kim, Software Engineer</p>
+                <p>"I exchanged my graphic design skills for web development help. ProConnect is a game-changer!"</p>
+                <p>- Jane Smith</p>
             </div>
         </div>
     </section>
